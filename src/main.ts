@@ -1,76 +1,36 @@
 import P5 from "p5";
-
-type CircleConstructorProps = {
-  radius: number;
-  x: number;
-  y: number;
-  color?: number;
-};
-
-class Circle {
-  #p5: P5;
-  #radius: number;
-  #multiplier: number;
-  #pos: P5.Vector;
-  #color: number;
-
-  constructor(p5: P5, { radius, x, y, color = 128 }: CircleConstructorProps) {
-    this.#p5 = p5;
-    this.#radius = radius;
-    this.#multiplier = 1;
-    this.#pos = new P5.Vector(x, y);
-    this.#color = color;
-  }
-
-  draw() {
-    const p5 = this.#p5;
-
-    p5.push();
-
-    p5.noStroke();
-    p5.fill(this.#color);
-
-    p5.circle(this.#pos.x, this.#pos.y, this.#radius * this.#multiplier);
-
-    p5.pop();
-  }
-
-  update() {
-    const p5 = this.#p5;
-
-    const frame = p5.frameCount * 0.05;
-    const noise = p5.noise(frame);
-    const mapped = p5.map(noise, 0, 1, 0.6, 1.4);
-    this.#multiplier = mapped;
-  }
-}
+import { Particles } from "./particle";
 
 const WIDTH = 600;
 const HEIGHT = 600;
 
 const sketch = (p5: P5) => {
-  let circles: Circle[] = [];
+  let yellow: Particles;
+  let red: Particles;
+  let blue: Particles;
 
   p5.setup = () => {
     const canvas = p5.createCanvas(WIDTH, HEIGHT);
     canvas.parent("p5");
-    [...new Array(10)].forEach(() => {
-      const x = p5.random(0, WIDTH);
-      const y = p5.random(0, HEIGHT);
-      const radius = p5.random(WIDTH / 10, WIDTH / 4);
-      const color = p5.random(0, 255);
-      const circle = new Circle(p5, { radius, x, y, color });
-      circles.push(circle);
-    });
+
+    yellow = new Particles(p5, { count: 200, color: p5.color(255, 204, 0) });
+    red = new Particles(p5, { count: 200, color: p5.color("red") });
+    blue = new Particles(p5, { count: 200, color: p5.color("aliceblue") });
   };
 
   p5.draw = () => {
-    p5.background(200);
+    p5.background(100, 220);
 
-    circles.forEach((circle) => {
-      circle.update();
-      circle.draw();
-    });
+    Particles.rule(blue, blue, -0.32);
+    Particles.rule(blue, red, -0.17);
+    Particles.rule(blue, yellow, 0.34);
+    Particles.rule(red, red, -0.1);
+    Particles.rule(red, blue, -0.34);
+    Particles.rule(yellow, yellow, 0.15);
+    Particles.rule(yellow, blue, -0.2);
+    yellow.draw();
+    red.draw();
+    blue.draw();
   };
 };
 
