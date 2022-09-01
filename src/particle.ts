@@ -43,8 +43,8 @@ export class Particles {
     this.particles = [...new Array(count)].map(
       () =>
         new Particle(p5, {
-          x: p5.random() * 500 + 50,
-          y: p5.random() * 500 + 50,
+          x: this.#p5.random() * 500 + 50,
+          y: this.#p5.random() * 500 + 50,
           color,
         })
     );
