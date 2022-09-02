@@ -17,7 +17,7 @@ const sketch = (p5: P5) => {
   };
 
   p5.draw = () => {
-    p5.background(100, 220);
+    p5.background(100);
 
     flock.run();
   };
