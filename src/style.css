@@ -73,3 +73,12 @@ main {
   width: fit-content;
   box-shadow: var(--shadow-elevation-medium);
 }
+
+header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.5rem;
+}

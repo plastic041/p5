@@ -73,6 +73,7 @@ export class Boid {
     p5.fill(200);
     p5.noStroke();
     p5.circle(this.pos.x, this.pos.y, 4);
+    p5.pop();
   }
 
   borders() {

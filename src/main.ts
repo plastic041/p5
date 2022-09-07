@@ -1,37 +1,35 @@
-import P5 from "p5";
-import { Particles } from "./particle";
+import { runFlocking } from "./pages/flocking";
+import { runParticles } from "./pages/particles";
 
-const WIDTH = 600;
-const HEIGHT = 600;
+const urls = ["flocking", "particles"];
 
-const sketch = (p5: P5) => {
-  let yellow: Particles;
-  let red: Particles;
-  let blue: Particles;
+const main = () => {
+  const header = document.querySelector("header")!;
+  const links = urls.map(
+    (url) => `
+      <a href="./${url}">
+        ${url}
+      </a>
+    `
+  ).join(`
+    `);
+  header.innerHTML = links;
 
-  p5.setup = () => {
-    const canvas = p5.createCanvas(WIDTH, HEIGHT);
-    canvas.parent("p5");
+  const pathname = window.location.pathname.split("/")[1];
+  console.log(pathname);
 
-    yellow = new Particles(p5, { count: 200, color: p5.color(255, 204, 0) });
-    red = new Particles(p5, { count: 200, color: p5.color("red") });
-    blue = new Particles(p5, { count: 200, color: p5.color("aliceblue") });
-  };
+  switch (pathname) {
+    case "particles":
+      runParticles();
+      break;
 
-  p5.draw = () => {
-    p5.background(100, 220);
+    case "flocking":
+      runFlocking();
+      break;
 
-    Particles.rule(blue, blue, -0.32);
-    Particles.rule(blue, red, -0.17);
-    Particles.rule(blue, yellow, 0.34);
-    Particles.rule(red, red, -0.1);
-    Particles.rule(red, blue, -0.34);
-    Particles.rule(yellow, yellow, 0.15);
-    Particles.rule(yellow, blue, -0.2);
-    yellow.draw();
-    red.draw();
-    blue.draw();
-  };
+    default:
+      break;
+  }
 };
 
-new P5(sketch);
+main();
