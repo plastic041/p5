@@ -1,7 +1,6 @@
-import { runFlocking } from "./pages/flocking";
-import { runParticles } from "./pages/particles";
+import { runWfc } from "./pages/wfc";
 
-const urls = ["flocking", "particles"];
+const urls = ["wfc"];
 
 const main = () => {
   const header = document.querySelector("header")!;
@@ -19,12 +18,8 @@ const main = () => {
   console.log(pathname);
 
   switch (pathname) {
-    case "particles":
-      runParticles();
-      break;
-
-    case "flocking":
-      runFlocking();
+    case "wfc":
+      runWfc();
       break;
 
     default:
