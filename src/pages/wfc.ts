@@ -1,11 +1,5 @@
 import P5 from "p5";
 
-const assert = (condition: boolean, message: string) => {
-  if (!condition) {
-    throw new Error(message);
-  }
-};
-
 const GRID_SIZE = 20;
 const SPRITE_SIZE = 8;
 const CANVAS_SIZE = GRID_SIZE * SPRITE_SIZE;
