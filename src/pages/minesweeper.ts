@@ -76,7 +76,7 @@ class MineField {
     for (let y = 0; y < this.rows; y++) {
       this.cells[y] = [];
       for (let x = 0; x < this.cols; x++) {
-        this.cells[y][x] = new Cell(this.p5, y, x);
+        this.cells[y][x] = new Cell(this.p5, x, y);
       }
     }
 
@@ -114,7 +114,7 @@ class MineField {
     this.cells.forEach((row) => row.forEach((cell) => cell.draw()));
   }
 
-  public click(x: number, y: number) {
+  public step(x: number, y: number) {
     const queue: [number, number][] = [[x, y]];
     const visited = new Set<string>();
 
@@ -154,12 +154,28 @@ class MineField {
 
     return neighbors;
   }
+
+  public get isSolved() {
+    for (let y = 0; y < this.rows; y++) {
+      for (let x = 0; x < this.cols; x++) {
+        if (this.cells[y][x].isMine && !this.cells[y][x].isHidden) {
+          return false;
+        }
+
+        if (!this.cells[y][x].isMine && this.cells[y][x].isHidden) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
 }
 
 export const runMinesweeper = () => {
   const ROWS = 10;
   const COLS = 10;
-  const MINES_COUNT = 10;
+  const MINES_COUNT = 1;
 
   let mineField: MineField;
 
@@ -172,12 +188,29 @@ export const runMinesweeper = () => {
 
       p5.background(200);
       mineField.draw();
-
-      mineField.click(0, 0);
-      mineField.draw();
     };
 
-    p5.draw = () => {};
+    p5.draw = () => {
+      mineField.draw();
+      if (mineField.isSolved) {
+        p5.fill(0, 0, 0, 100);
+        p5.rect(0, 0, 200, 200);
+
+        p5.fill(255, 255, 255);
+        p5.textSize(24);
+        p5.textAlign(p5.CENTER, p5.CENTER);
+        p5.text("You won!", 100, 100);
+      }
+    };
+
+    p5.mouseReleased = () => {
+      if (p5.mouseButton === p5.LEFT) {
+        const x = Math.floor(p5.mouseX / 20);
+        const y = Math.floor(p5.mouseY / 20);
+        mineField.step(x, y);
+        mineField.draw();
+      }
+    };
   };
 
   new P5(sketch);
