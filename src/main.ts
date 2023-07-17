@@ -1,7 +1,8 @@
 import { runMinesweeper } from "./pages/minesweeper";
 import { runWfc } from "./pages/wfc";
+import { runDither } from "./pages/dither";
 
-const urls = ["wfc", "minesweeper"];
+const urls = ["wfc", "minesweeper", "dither"];
 
 const main = () => {
   const header = document.querySelector("header")!;
@@ -25,6 +26,10 @@ const main = () => {
 
     case "minesweeper":
       runMinesweeper();
+      break;
+
+    case "dither":
+      runDither();
       break;
 
     default:
